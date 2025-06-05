@@ -1,16 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const [count, setCount] = useState(0);
+  const navigate = useNavigate();
 
+  const [total, setTotal] = useState<string[]>([]);
+
+  useEffect(() => {
+    const orders = localStorage.getItem("cart");
+    if (orders) {
+      setTotal(JSON.parse(orders));
+    }
+  }, []);
+
+  const handleClick = () => {
+    navigate("/buy");
+  };
   return (
     <>
       <button
         type="button"
         className="btn border btn-primary"
         style={{ width: "80px" }}
+        onClick={handleClick}
       >
-        {count}
+        {total.length}
       </button>
     </>
   );
