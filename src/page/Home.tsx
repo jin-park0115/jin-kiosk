@@ -9,7 +9,9 @@ const Home = () => {
       <Container>
         <NavMenu />
         <HotMenu />
-        <Cart />
+        <div className="d-flex justify-content-end mt-3">
+          <Cart />
+        </div>
       </Container>
     </>
   );

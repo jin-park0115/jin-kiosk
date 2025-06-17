@@ -1,13 +1,23 @@
 import { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+
+type ExtraOption = {
+  title: string;
+  price: string;
+  count: number;
+};
 
 type ItemsState = {
   id: number;
   title: string;
   price: string;
   option: string;
+  extras?: ExtraOption[];
 };
 
 const BuyPage = () => {
+  const navigate = useNavigate();
   const [items, setItems] = useState<ItemsState[]>([]);
 
   useEffect(() => {
@@ -18,30 +28,59 @@ const BuyPage = () => {
   }, []);
 
   const totalPrice = items.reduce((sum, item) => {
-    return sum + parseInt(item.price);
+    const basePrice = parseInt(item.price);
+    const extraTotal =
+      item.extras?.reduce((extraSum, extra) => {
+        return extraSum + parseInt(extra.price) * extra.count;
+      }, 0) || 0;
+
+    return sum + basePrice + extraTotal;
   }, 0);
 
+  const handleCancel = () => {
+    alert("취소하시겠습니까?");
+    localStorage.clear();
+    navigate(-1);
+  };
+
   return (
-    <>
+    <div className="border" style={{ width: "60%", margin: "0 auto" }}>
       <h1>buyPage</h1>
       {items.map((item) => (
-        <div className="border" key={item.id}>
-          <p>
+        <div className="border p-3 mb-3" key={item.id}>
+          <p className="fw-semibold">
             메뉴명 : {item.option} {item.title}
           </p>
-          <p>가격 : {item.price}원</p>
+          <p className="fw-lighter">기본 가격 : {item.price}원</p>
+
+          {item.extras && item.extras.length > 0 && (
+            <div style={{ paddingLeft: "10px" }}>
+              <p className="fw-light">추가 옵션:</p>
+              <ul>
+                {item.extras.map((extra, idx) => (
+                  <li key={idx} style={{ fontSize: "0.8rem" }}>
+                    {extra.title} x{extra.count} ( +
+                    {(parseInt(extra.price) * extra.count).toLocaleString()}원)
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       ))}
-      <p>결제 금액: {totalPrice.toLocaleString()}원</p>
-      <div>결제하기</div>
-      <div>뒤로가기</div>
-    </>
+      <p className="fst-italic fw-bold">
+        결제 금액: {totalPrice.toLocaleString()}원
+      </p>
+      <div className="d-flex gap-2" style={{ marginTop: "20px" }}>
+        <Button variant="dark" style={{ width: "50%" }}>
+          결제하기
+        </Button>
+        <Button variant="dark" style={{ width: "50%" }} onClick={handleCancel}>
+          취소하기
+        </Button>
+      </div>
+    </div>
   );
 };
 
 export default BuyPage;
-// prcie를 이제 number로 해서 총 합이 나와야 겠지 진아.
-// state로 해보자 parseInt해서 슈슈슛
-// const price = items.map((item) => item.price);
-// const total = price.map(Number); 흠 이렇게 해도 안되는군
-// 찾아보니 reduce함수를 사용해야함.

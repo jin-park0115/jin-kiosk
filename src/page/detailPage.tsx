@@ -21,12 +21,8 @@ const extraData = [
     addprice: "500",
   },
   {
-    title: "펄 추가",
-    addprice: "700",
-  },
-  {
     title: "디카페인 변경",
-    addprice: "1,000",
+    addprice: "500",
   },
   {
     title: "샷 추가",
@@ -42,9 +38,19 @@ const DetailPage = () => {
   const navigate = useNavigate();
 
   const [isActive, setIsActive] = useState("");
+  const [selectedExtras, setSelectedExtras] = useState<
+    { title: string; price: string; count: number }[]
+  >([]);
 
   const handleClick = (active: string) => {
     setIsActive(active);
+  };
+
+  const handleExtraChange = (title: string, price: string, count: number) => {
+    setSelectedExtras((prev) => {
+      const filtered = prev.filter((e) => e.title !== title);
+      return count > 0 ? [...filtered, { title, price, count }] : filtered;
+    });
   };
 
   const handleSubmit = () => {
@@ -53,12 +59,13 @@ const DetailPage = () => {
       title: item.title,
       price: item.price,
       option: isActive === "active1" ? "ICE" : "HOT",
+      extras: selectedExtras,
     };
 
     const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
     localStorage.setItem("cart", JSON.stringify([...existingCart, cartItem]));
 
-    alert("담았습니다");
+    alert("장바구니에 담겼습니다");
     navigate("/");
   };
 
@@ -98,7 +105,11 @@ const DetailPage = () => {
               <p className="text-body-secondary border-bottom">추가 옵션</p>
               {extraData.map((item, index) => (
                 <div key={index}>
-                  <Extra title={item.title} price={item.addprice} />
+                  <Extra
+                    title={item.title}
+                    price={item.addprice}
+                    onChange={handleExtraChange}
+                  />
                 </div>
               ))}
             </div>
