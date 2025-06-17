@@ -12,7 +12,7 @@ const HotMenu = () => {
   return (
     <div>
       <div
-        className="border d-flex flex-wrap"
+        className="d-flex flex-wrap"
         style={{ gap: "10px", marginTop: "10px" }}
       >
         {menus.map((items) => (

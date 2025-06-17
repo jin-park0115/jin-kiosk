@@ -44,8 +44,16 @@ const BuyPage = () => {
   };
 
   return (
-    <div className="border" style={{ width: "60%", margin: "0 auto" }}>
-      <h1>buyPage</h1>
+    <div
+      className="border buyContainer"
+      style={{ width: "60%", margin: "0 auto" }}
+    >
+      <div className="d-flex justify-content-between">
+        <h1>주문내역</h1>
+        <div style={{ cursor: "pointer" }} onClick={() => navigate(-1)}>
+          뒤로가기
+        </div>
+      </div>
       {items.map((item) => (
         <div className="border p-3 mb-3" key={item.id}>
           <p className="fw-semibold">

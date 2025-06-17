@@ -20,3 +20,15 @@ a {
   text-decoration: none !important;
   color: inherit !important;
 }
+@media (max-width: 770px) {
+  .responsive-title {
+    font-size: 0.8rem !important;
+  }
+
+  .responsive-price {
+    font-size: 0.7rem !important;
+  }
+  .buyContainer {
+    width: 70%;
+  }
+}

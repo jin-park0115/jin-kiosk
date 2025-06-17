@@ -7,8 +7,8 @@ const Items = (props: PropType) => {
   return (
     <>
       <div className="border text-center" style={{ cursor: "pointer" }}>
-        <p className="fw-bold">{props.title}</p>
-        <p className="fw-light">{props.price}</p>
+        <p className="fw-bold responsive-title">{props.title}</p>
+        <p className="fw-light responsive-price">{props.price}</p>
       </div>
     </>
   );
